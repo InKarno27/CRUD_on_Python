@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+</head>
+<body>
+    <h1>Add Employee</h1>
+    <form id="employeeForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required><br><br>
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+        
+        <label for="middleName">Middle Name:</label>
+        <input type="text" id="middleName" name="middleName" required><br><br>
+        
+        <label for="position">Position:</label>
+        <input type="text" id="position" name="position" required><br><br>
+        
+        <input type="submit" value="Add Employee">
+    </form>
+
+    <script>
+        document.getElementById("employeeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var form = event.target;
+            var data = {
+                "first_name": form.firstName.value,
+                "last_name": form.lastName.value,
+                "middle_name": form.middleName.value,
+                "position": form.position.value
+            };
+            
+            fetch("/employees", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    alert("Employee added successfully.");
+                    form.reset();
+                } else {
+                    alert("Failed to add employee.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
